@@ -24,6 +24,15 @@ The backend listens on `127.0.0.1:8080`, the Vite dev server proxies `/api` to i
 
 Tests: `cd backend && cargo test` (no AI call is made by the tests).
 
+## Image
+
+```bash
+docker build --network host -t pantry-cook:dev .
+```
+
+On mikaela the build hung at `npm ci` for over 5 minutes without `--network host` and passed in
+seconds with it (2026-10-13, cause not diagnosed; aether's `bin/deploy` uses the same flag). Not deployed to roberta yet.
+
 ## Environment
 
 | Variable | Default | Use |

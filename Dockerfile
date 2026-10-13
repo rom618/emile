@@ -19,7 +19,8 @@ FROM node:24.21.0-bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g --no-audit --no-fund @anthropic-ai/claude-code@2.1.285 \
-    && useradd --create-home --uid 10001 pantry
+    && useradd --create-home --uid 10001 pantry \
+    && mkdir -p /app/app-data && chown pantry:pantry /app/app-data
 WORKDIR /app
 COPY --from=backend-build /app/backend/target/release/pantry-cook ./pantry-cook
 COPY --from=frontend-build /app/frontend/dist ./static
