@@ -28,8 +28,8 @@ pub struct Claude {
 impl Claude {
     pub fn from_env() -> Self {
         Self {
-            bin: std::env::var("PANTRY_CLAUDE_BIN").unwrap_or_else(|_| "claude".into()),
-            timeout: Duration::from_secs(std::env::var("PANTRY_CLAUDE_TIMEOUT_SECS").ok().and_then(|v| v.parse().ok()).unwrap_or(120)),
+            bin: std::env::var("EMILE_CLAUDE_BIN").unwrap_or_else(|_| "claude".into()),
+            timeout: Duration::from_secs(std::env::var("EMILE_CLAUDE_TIMEOUT_SECS").ok().and_then(|v| v.parse().ok()).unwrap_or(120)),
         }
     }
 

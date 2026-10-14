@@ -80,7 +80,7 @@ export default function App() {
 
   return (
     <main className="mx-auto max-w-md space-y-5 p-4">
-      <h1 className="text-2xl font-semibold">Pantry</h1>
+      <h1 className="text-2xl font-semibold">Emile</h1>
       {error && <p className="rounded bg-red-900/60 p-2 text-sm">{error}</p>}
       {draft ? (
         <Review draft={draft} setDraft={setDraft} onSave={save} onCancel={() => setDraft(null)} busy={busy} />

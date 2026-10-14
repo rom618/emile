@@ -1,7 +1,7 @@
-# pantry-cook
+# Emile
 
-rom's kitchen app (working name): what is in the pantry, what to cook tonight. Decisions and the
-plan: 9s `topics/pantry-cook.md`.
+rom's kitchen app: what is in the pantry, what to cook tonight. Decisions and the
+plan: 9s `topics/emile.md`.
 
 Status: first slice. Pantry list and adding food from a typed note (Claude Haiku reads it, you
 check the items before saving). Not deployed.
@@ -20,14 +20,14 @@ cd frontend && npm install && npm run dev
 ```
 
 The backend listens on `127.0.0.1:8080`, the Vite dev server proxies `/api` to it. Data goes to
-`backend/app-data/pantry.db`.
+`backend/app-data/emile.db`.
 
 Tests: `cd backend && cargo test` (no AI call is made by the tests).
 
 ## Image
 
 ```bash
-docker build --network host -t pantry-cook:dev .
+docker build --network host -t emile:dev .
 ```
 
 On mikaela the build hung at `npm ci` for over 5 minutes without `--network host` and passed in
@@ -37,18 +37,18 @@ seconds with it (2026-10-13, cause not diagnosed; aether's `bin/deploy` uses the
 
 | Variable | Default | Use |
 |---|---|---|
-| `PANTRY_DB_PATH` | `./app-data/pantry.db` | SQLite file |
-| `PANTRY_STATIC_DIR` | `../frontend/dist` | built frontend |
-| `PANTRY_BIND` | `127.0.0.1:8080` | listen address |
-| `PANTRY_SENTRY_DSN` | unset | Ciel app DSN; errors are reported only when set |
-| `PANTRY_SENTRY_ENVIRONMENT` | `production` | |
-| `PANTRY_REVISION` | unset | git revision in the release name |
-| `PANTRY_CLAUDE_BIN` | `claude` | Claude Code binary |
-| `PANTRY_CLAUDE_TIMEOUT_SECS` | `120` | per AI call |
+| `EMILE_DB_PATH` | `./app-data/emile.db` | SQLite file |
+| `EMILE_STATIC_DIR` | `../frontend/dist` | built frontend |
+| `EMILE_BIND` | `127.0.0.1:8080` | listen address |
+| `EMILE_SENTRY_DSN` | unset | Ciel app DSN; errors are reported only when set |
+| `EMILE_SENTRY_ENVIRONMENT` | `production` | |
+| `EMILE_REVISION` | unset | git revision in the release name |
+| `EMILE_CLAUDE_BIN` | `claude` | Claude Code binary |
+| `EMILE_CLAUDE_TIMEOUT_SECS` | `120` | per AI call |
 | `ANTHROPIC_BASE_URL` | unset | aether, e.g. `http://aether:8080/v1/claude-code` on roberta |
-| `ANTHROPIC_API_KEY` | unset | the app's aether client key `app-pantry-cook` (never printed) |
+| `ANTHROPIC_API_KEY` | unset | the app's aether client key `app-emile` (never printed) |
 
-`backend/pantry-cook report-test` sends one test error to the DSN.
+`backend/emile report-test` sends one test error to the DSN.
 
 ## AI calls
 

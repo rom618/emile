@@ -1,11 +1,11 @@
 use axum::body::Body;
 use axum::http::{Request, StatusCode};
 use http_body_util::BodyExt;
-use pantry_cook::{ai::Claude, build_router, connect_db, AppState};
+use emile::{ai::Claude, build_router, connect_db, AppState};
 use tower::ServiceExt;
 
 async fn app() -> (axum::Router, std::path::PathBuf) {
-    let dir = std::env::temp_dir().join(format!("pantry-test-{}-{}", std::process::id(), rand_suffix()));
+    let dir = std::env::temp_dir().join(format!("emile-test-{}-{}", std::process::id(), rand_suffix()));
     let db = connect_db(dir.join("t.db").to_str().unwrap()).await.unwrap();
     (build_router(AppState { db, claude: Claude::from_env() }, dir.to_str().unwrap()), dir)
 }
