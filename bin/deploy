@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+src="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+host="${EMILE_SERVER:-roberta}"
+stack=/srv/home-server/stacks/emile/compose.yaml
+port=5059
+sock="$(mktemp -u "${XDG_RUNTIME_DIR:-/tmp}/emile-deploy.XXXXXX")"
+revision="$(git -C "$src" rev-parse --short HEAD)"
+[ -z "$(git -C "$src" status --porcelain)" ] || revision="$revision-dirty"
+
+docker build --network host -q --build-arg EMILE_REVISION="$revision" -t emile:local "$src" >/dev/null
+docker tag emile:local "127.0.0.1:$port/emile:latest"
+ssh -o ExitOnForwardFailure=yes -M -S "$sock" -fN -L "$port:127.0.0.1:5000" "$host"
+trap 'ssh -S "$sock" -O exit "$host" 2>/dev/null' EXIT
+docker push -q "127.0.0.1:$port/emile:latest"
+if ssh "$host" "test -f $stack"; then
+    ssh "$host" "docker compose -f $stack pull -q emile && docker compose -f $stack up -d emile"
+    ssh "$host" "docker ps --filter name=^emile\$ --format '{{.Names}} {{.Status}}'"
+else
+    echo "image pushed; the stack is not on the server yet (bin/hs push in home-server starts it)"
+fi
+echo "deployed emile $revision"
